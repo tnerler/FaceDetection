@@ -75,7 +75,7 @@ def visualize(
     return annotated_image
 
 
-base_options = python.BaseOptions(model_asset_path='FaceDetection\\detector.tflite')
+base_options = python.BaseOptions(model_asset_path='detector.tflite')
 options = vision.FaceDetectorOptions(base_options=base_options)
 detector = vision.FaceDetector.create_from_options(options)
 
@@ -90,7 +90,8 @@ while True:
     mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
     detection_result = detector.detect(mp_image)
 
-    annotated_image = visualize(mp_image, detection_result)
+    image_np = mp_image.numpy_view()
+    annotated_image = visualize(image_np, detection_result)
 
     cv2.imshow("Camera Face Detection", annotated_image)
     if cv2.waitKey(1) & 0xFF == 27:
